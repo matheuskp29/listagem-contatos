@@ -1,20 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    const [nome, setNome] = useState('');
+    const [telefone, setTelefone] = useState('');
+    const [contatos, setContatos] = useState([]);
+    const [contador, setContador] = useState(0);
+
+    const capturarNome = (nomeDigitado) => {
+        setNome(nomeDigitado);
+    }
+
+    const capturarTelefone = (telefoneDigitado) => {
+        setTelefone(telefoneDigitado);
+    }
+
+    const adicionarContato = () => {
+        setContatos(contatos => {
+            setContador(contador + 1);
+            let aux = [{ key: contador.toString(), values: nome, telefone }, ...contatos];
+            setNome('');
+            setTelefone('');
+            console.log(aux);
+            return aux;
+        });
+    }
+
+    return (
+        <View style={styles.telaPrincipalView}>
+            <View>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="Digite o Nome"
+                    onChangeText = {capturarNome}
+                    value={nome}
+                />
+                <TextInput 
+                    placeholder="Digite o telefone"
+                    onChangeText = {capturarTelefone}
+                    value={telefone}
+                />
+                <Button 
+                    disabled={nome.length === 0 || telefone.length === 0}
+                    title="Adicionar Contato"
+                    onPress={adicionarContato}
+                />
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    telaPrincipalView: {
+        padding: 40
+    },
+    inputText: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 2,
+        marginBottom: 4,
+        padding: 12
+    },
 });
