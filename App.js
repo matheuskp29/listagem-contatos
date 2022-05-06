@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
     const [nome, setNome] = useState('');
@@ -18,9 +18,11 @@ export default function App() {
     const adicionarContato = () => {
         setContatos(contatos => {
             setContador(contador + 1)
-            let aux = [...contatos, { key: contador.toString(), value: {nome: nome, telefone: telefone} } ];
+            let aux = [...contatos, { key: contador.toString(), value: {nome: nome, telefone: telefone}}];
             setNome('');
             setTelefone('');
+
+            // Imprimindo no log o array
             console.log(aux);
             return aux;
         });
@@ -47,6 +49,16 @@ export default function App() {
                     onPress={adicionarContato}
                 />
             </View>
+
+            {/* Bonus FlatList */}
+            <FlatList
+                data={contatos}
+                renderItem={contato => (
+                    <View style={styles.itemNaLista}>
+                        <Text>{contato.item.value.nome} - {contato.item.value.telefone}</Text>
+                    </View>
+                )}
+            />
         </View>
     );
 }
@@ -64,4 +76,13 @@ const styles = StyleSheet.create({
         marginBottom: 4,
         padding: 12,
     },
+    itemNaLista: {
+        marginTop: 8,
+        padding: 12,
+        backgroundColor: '#CCC',
+        borderColor: '#000',
+        borderWidth: 1,
+        borderRadius: 8,
+        width: 250
+    }
 });
